@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dbt-junitxml"
+version = "0.0.0"
+description = ""
+authors = ["Charles Lariviere <charles@dribbble.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/dribbble/dbt-junitxml"
+packages = [
+    { include = "dbt_junitxml", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+junit-xml = "^1.9"
+click = "^8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dbt-junitxml = 'dbt_junitxml.main:cli'
