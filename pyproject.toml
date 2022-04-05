@@ -2,10 +2,10 @@
 name = "dbt-junitxml"
 version = "0.0.0"
 description = ""
-authors = ["Charles Lariviere <charles@dribbble.com>"]
+authors = ["Charles Lariviere <charleslariviere1@gmail.com>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/dribbble/dbt-junitxml"
+repository = "https://github.com/chasleslr/dbt-junitxml"
 packages = [
     { include = "dbt_junitxml", from = "src" },
 ]
