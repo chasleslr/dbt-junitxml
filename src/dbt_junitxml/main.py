@@ -49,8 +49,15 @@ def parse(run_result, output):
             elapsed_sec=test["execution_time"],
             status=test["status"],
         )
-        if test["failures"] > 0:
+
+        if test["status"] == "fail":
             test_case.add_failure_info(message=test["message"])
+
+        if test["status"] == "error":
+            test_case.add_error_info(message=test["message"])
+
+        if test["status"] == "skipped":
+            test_case.add_skipped_info(message=test["message"])
 
         test_cases.append(test_case)
 
