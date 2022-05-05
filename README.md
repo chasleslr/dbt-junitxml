@@ -13,10 +13,10 @@ pip install dbt-junitxml
 ## Usage
 
 When you run your dbt test suite, the output is saved under `target/run_results.json`. Run the following command
-to parse your run results and output a jUnit XML formatted report.
+to parse your run results and output a jUnit XML formatted report named `report.xml`.
 
 ```shell
-dbt-junitxml target/run_results.json report.xml
+dbt-junitxml parse target/run_results.json report.xml
 ```
 
 ## Limitations
