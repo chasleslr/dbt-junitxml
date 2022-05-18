@@ -45,7 +45,7 @@ def parse(run_result, output):
     for test in tests:
         test_case = TestCase(
             classname=test["unique_id"],
-            name=test["unique_id"].split(".")[-2],
+            name=test["unique_id"].split(".")[2],
             elapsed_sec=test["execution_time"],
             status=test["status"],
         )
