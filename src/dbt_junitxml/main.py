@@ -33,13 +33,16 @@ def parse(run_result, output):
         if not schema_version == "https://schemas.getdbt.com/dbt/run-results/v4.json":
             raise InvalidRunResult("run_result.json other than v4 are not supported.")
 
-        if not rpc_method == "test":
-            raise InvalidRunResult(f"run_result.json must be from the output of `dbt test`. Got dbt {rpc_method}.")
+        if not rpc_method in ["test", "build"]:
+            raise InvalidRunResult(f"run_result.json must be from the output of `dbt test` or `dbt build`. Got dbt {rpc_method}.")
 
     except KeyError as e:
         raise InvalidRunResult(e)
 
-    tests = run_result["results"]
+    def is_test(dict):
+        return dict["unique_id"].split(".")[0] == 'test'
+
+    tests = [d for d in run_result['results'] if is_test(d)]
 
     test_cases = []
     for test in tests:
