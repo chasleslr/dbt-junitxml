@@ -64,22 +64,14 @@ def parse(run_result, manifest, output):
         if config['resource_type'] == 'test':
             test_name = key.split('.')[2]
             tests_manifest[test_name] = config
-            sql_path = os.path.join(config['root_path'], 'target', 'compiled', config['package_name'],
-                                    config['original_file_path'], config['path'])
             sql_log = \
                 f"""select * from {tests_manifest[test_name]['schema']}.{tests_manifest[test_name]['alias']
                 if tests_manifest[test_name]['alias'] else tests_manifest[test_name]['name']}"""
             sql_log_format = "\n" + '-'*96 + "\n" + sql_log + "\n" + '-'*96
-            try:
-                with open(sql_path, 'r') as sql:
-                    sql_text = sql.readlines()
-                    sql_text.insert(0, sql_log_format)
-                    tests_manifest[test_name]['sql'] = str.join('', sql_text)
-            except FileNotFoundError as e:
-                sql_text = config['compiled_sql'] if 'compiled_sql' in config.keys() else config[
-                    'raw_sql']
-                sql_text = [sql_log_format, sql_text]
-                tests_manifest[test_name]['sql'] = str.join('', sql_text)
+            sql_text = config['compiled_sql'] if 'compiled_sql' in config.keys() else config[
+                'raw_sql']
+            sql_text = [sql_log_format, sql_text]
+            tests_manifest[test_name]['sql'] = str.join('', sql_text)
 
 
     test_cases = []
