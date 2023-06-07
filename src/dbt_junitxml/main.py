@@ -42,15 +42,15 @@ def parse(run_result, manifest, output):
         manifest = json.load(m)['nodes']
 
     try:
-        rpc_method = run_result["args"]["rpc_method"]
+        executed_command = run_result["args"]["which"]
         schema_version = run_result["metadata"]["dbt_schema_version"]
 
         if not schema_version == "https://schemas.getdbt.com/dbt/run-results/v4.json":
             raise InvalidRunResult("run_result.json other than v4 are not supported.")
 
-        if not rpc_method == "test":
+        if not executed_command == "test":
             raise InvalidRunResult(
-                f"run_result.json must be from the output of `dbt test`. Got dbt {rpc_method}.")
+                f"run_result.json must be from the output of `dbt test`. Got dbt {executed_command}.")
 
     except KeyError as e:
         raise InvalidRunResult(e)
