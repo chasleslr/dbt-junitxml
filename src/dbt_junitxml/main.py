@@ -42,7 +42,7 @@ def parse(run_result, manifest, output):
         manifest = json.load(m)['nodes']
 
     try:
-        executed_command = run_result["args"]["which"]
+        executed_command = run_result["args"]["which"] if 'which' in run_result["args"].keys() else run_result["args"]["rpc_method"]
         schema_version = run_result["metadata"]["dbt_schema_version"]
 
         if not schema_version == "https://schemas.getdbt.com/dbt/run-results/v4.json":
@@ -68,8 +68,14 @@ def parse(run_result, manifest, output):
                 f"""select * from {tests_manifest[test_name]['schema']}.{tests_manifest[test_name]['alias']
                 if tests_manifest[test_name]['alias'] else tests_manifest[test_name]['name']}"""
             sql_log_format = "\n" + '-'*96 + "\n" + sql_log + "\n" + '-'*96
-            sql_text = config['compiled_sql'] if 'compiled_sql' in config.keys() else config[
-                'raw_sql']
+            if 'compiled_sql' in config.keys():
+                sql_text = config['compiled_sql']
+            elif 'compiled_code' in config.keys():
+                sql_text = config['compiled_code']
+            elif 'raw_code' in config.keys():
+                sql_text = config['raw_code']
+            else:
+                sql_text = config['raw_sql']
             sql_text = [sql_log_format, sql_text]
             tests_manifest[test_name]['sql'] = str.join('', sql_text)
 
