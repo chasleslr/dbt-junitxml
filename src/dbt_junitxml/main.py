@@ -1,6 +1,6 @@
-import click
 import json
 
+import click
 from junit_xml import TestCase, TestSuite, to_xml_report_string
 
 
@@ -14,27 +14,23 @@ def cli():
 
 
 @cli.command()
-@click.argument(
-    "run_result",
-    type=click.Path(exists=True)
-)
-@click.argument(
-    "output",
-    type=click.Path(exists=False)
-)
+@click.argument("run_result", type=click.Path(exists=True))
+@click.argument("output", type=click.Path(exists=False))
 def parse(run_result, output):
     with open(run_result) as f:
         run_result = json.load(f)
 
     try:
-        rpc_method = run_result["args"]["rpc_method"]
-        schema_version = run_result["metadata"]["dbt_schema_version"]
+        executed_command = (
+            run_result["args"]["which"]
+            if "which" in run_result["args"].keys()
+            else run_result["args"]["rpc_method"]
+        )
 
-        if not schema_version == "https://schemas.getdbt.com/dbt/run-results/v4.json":
-            raise InvalidRunResult("run_result.json other than v4 are not supported.")
-
-        if not rpc_method == "test":
-            raise InvalidRunResult(f"run_result.json must be from the output of `dbt test`. Got dbt {rpc_method}.")
+        if not executed_command == "test":
+            raise InvalidRunResult(
+                f"run_result.json must be from the output of `dbt test`. Got dbt {executed_command}."
+            )
 
     except KeyError as e:
         raise InvalidRunResult(e)
