@@ -45,8 +45,11 @@ def parse(run_result, manifest, output):
         executed_command = run_result["args"]["which"] if 'which' in run_result["args"].keys() else run_result["args"]["rpc_method"]
         schema_version = run_result["metadata"]["dbt_schema_version"]
 
-        if not schema_version == "https://schemas.getdbt.com/dbt/run-results/v4.json":
-            raise InvalidRunResult("run_result.json other than v4 are not supported.")
+        if schema_version not in [
+            "https://schemas.getdbt.com/dbt/run-results/v4.json",
+            "https://schemas.getdbt.com/dbt/run-results/v5.json",
+        ]:
+            raise InvalidRunResult("run_result.json other than v4 and v5 are not supported.")
 
         if not executed_command == "test":
             raise InvalidRunResult(
