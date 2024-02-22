@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "dbt-junitxml"
-version = "0.0.0"
-description = ""
-authors = ["Charles Lariviere <charleslariviere1@gmail.com>"]
+version = "0.2.1"
+description = "Utility to convert DBT test results into Junit XML format"
+authors = ["Charles Lariviere <charleslariviere1@gmail.com>", "Siarhei Nekhviadovich <sovalinux@gmail.com>", "Aliaksandra Sidarenka <Aliaksandra_Sidarenka@epam.com>"]
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/chasleslr/dbt-junitxml"
